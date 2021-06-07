@@ -20,20 +20,21 @@ Both sessions have separate requirements on installed libraries, therefore I sug
 - Use Conda, tutorial here: [Getting started with conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html)
 - Use Venv, tutorial here: [Installing packages using pip and virtual environments — Python Packaging User Guide](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 - Using other online services, here I list some free to use services (in no specific order):
--- Google Collaboratory (Colab)
--- Microsoft Azure Notebooks
--- Databricks
--- Kaggle Kernels
--- Binder
--- Datalore
---  CoCalc
+  - Google Collaboratory (Colab)
+  - Microsoft Azure Notebooks
+  - Databricks
+  - Kaggle Kernels
+  - Binder
+  - Datalore
+  -  CoCalc
 
 I have used Datalore to create materials for this session, but these materials are completely system-agnostic, therefore feel free to use any of above mentioned options. I have used Datalore, because I wanted to test this service, but I usually work either using Databricks or combining Conda and virtual machines.
 
 The GitHub repository with all materials contains three folders:
+
 - AI Risk to Companies: presentation
 - Bias in Data: materials for lesson 2
--Adversarial Attack: materials for lesson 3
+- Adversarial Attack: materials for lesson 3
 
 The repository is subject to change. All the materials will be made available in final version just before the session. These materials will stay there for foreseeable future.
 Folders for coding parts (lesson 2 and 3) contain also requirements.txt file. This requirements files list all libraries I had installed during the creation of these materials. As I used Datalore, which creates environment with lot of pre-installed libraries, you will not require all these libraries, but if you installed them, the materials will work for you without any issue. You can install these libraries using pip, either directly or by using command: `pip install -r /path/to/requirements.txt`
