@@ -17,8 +17,8 @@ In the last lesson, we will simulate adversarial attacks, where we as the attack
 Lesson 2 and 3 will consists of going through interactive Jupyter notebook in Python language. You do not need to prepare anything, if you want to only watch, but I strongly suggest exploring these notebooks alone and playing with the code after the session to fully grasp these techniques.
 Both sessions have separate requirements on installed libraries, therefore I suggest creating two virtual Python environments. Here are the options you have – all are equal:
 
-- Use Conda, tutorial here: Getting started with conda
-- Use Venv, tutorial here: Installing packages using pip and virtual environments — Python Packaging User Guide
+- Use Conda, tutorial here: [Getting started with conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html)
+- Use Venv, tutorial here: [Installing packages using pip and virtual environments — Python Packaging User Guide](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 - Using other online services, here I list some free to use services (in no specific order):
 -- Google Collaboratory (Colab)
 -- Microsoft Azure Notebooks
