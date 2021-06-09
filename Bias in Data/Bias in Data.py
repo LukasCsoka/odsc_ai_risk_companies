@@ -3,6 +3,7 @@
 # -- Sheet --
 
 # #  Bias in Data
+# ## Unverified black box model is the path to the failure. Opaqueness leads to distrust. Distrust leads to ignoration. Ignoration leads to rejection.
 # 
 # The code that I’m providing has been built mainly upon the following sources:
 #  
@@ -11,9 +12,8 @@
 # - https://dalex.drwhy.ai/python/
 # - https://www.kdnuggets.com/2020/12/machine-learning-model-fair.html
 #  
-# Unverified black box model is the path to the failure. Opaqueness leads to distrust. Distrust leads to ignoration. Ignoration leads to rejection.
 # 
-# The dalex package xrays any model and helps to explore and explain its behaviour, helps to understand how complex models are working. The main [Explainer](https://dalex.drwhy.ai/python/api/#dalex.Explainer) object creates a wrapper around a predictive model. Wrapped models may then be explored and compared with a collection of model-level and predict-level explanations. Moreover, there are fairness methods and interactive exploration dashboards available to the user.
+# The dalex package "xrays" any model and helps to explore and explain its behaviour. It helps to understand how complex models are working. The main [Explainer](https://dalex.drwhy.ai/python/api/#dalex.Explainer) object creates a wrapper around a predictive model. Wrapped models may then be explored and compared with a collection of model-level and predict-level explanations. Moreover, there are fairness methods and interactive exploration dashboards available to the user.
 # 
 # The philosophy behind dalex explanations is described in the [Explanatory Model Analysis e-book](https://ema.drwhy.ai/).
 
@@ -35,9 +35,9 @@ from sklearn.metrics import plot_confusion_matrix
 # To showcase the problem of fairness in AI, we will be using the German Credit Data dataset to assign risk for each credit-seeker.
 # Information about this dataset can be found here: https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)
 # 
-# We will at first create a very simple ML model (decision tree) for the data. Additionally, we will use create random forest and logistic regression, but thes two models will be used later.
+# We will at first create a very simple ML model (decision tree) for the data. Additionally, we will  create random forest and logistic regression, but these two models will be used later.
 # 
-# It is very important to avoid any bias, when a person applies for loan in bank, as nobody would want to be negatively affected, as well if the bank does not have reliable model, the bank can lose part of business or provide loans to people, that would not receive loans by unbiased models. 
+# It is very important to avoid any bias, when a person applies for loan in bank, as nobody would want to be negatively affected. Additionaly, if the bank does not have reliable models, the bank can lose part of business or provide loans to people, that would not receive loans by unbiased models. 
 # 
 # The data we use for modeling is in the major part a reflection of the world it derives from. And as the world can be biased, so data and therefore model will likely reflect that. 
 
@@ -45,7 +45,7 @@ from sklearn.metrics import plot_confusion_matrix
 # load credit data
 data = dx.datasets.load_german()
 
-# risk is the target variable
+# risk is the target variable in our case
 features = data.drop(columns='risk')
 labels = data.risk
 
@@ -88,7 +88,7 @@ clf_logreg = Pipeline(steps=[('preprocessor', preprocessor),
 # plot confusion matrix of decision tree
 plot_confusion_matrix(clf, features, labels)
 
-# We create an Explainer object to showcase dalex functionalities. Then we look at the overal performance of our model. Even through its simple, it is not bad. At first, we will use only decision tree.
+# We create an Explainer object to showcase dalex functionalities. Then we look at the overal performance of our model. Even through its simple, it is not bad. At first, we will work only with the simple decision tree.
 
 
 exp = dx.Explainer(clf, features, labels)
@@ -103,20 +103,20 @@ exp.model_performance().result
 # 
 # $\forall_{i \varepsilon \{a,b,...,z\}}  \epsilon  \frac{metrix_i}{metric_{privileged}} < \frac{1}{\epsilon}$
 # 
-# where the epsilon is a value between 0 and 1. It should be a minimum acceptable ratio. On default, it is 0.8, which adheres to [four-fifths rule (80% rule)](https://www.hirevue.com/blog/hiring/what-is-adverse-impact-and-why-measuring-it-matters) commonly used. Of course, a user may change this value to their needs.
+# where the epsilon is a value between 0 and 1. It should be a minimum acceptable ratio. On default, it is 0.8, which adheres to [four-fifths rule (80% rule)](https://www.hirevue.com/blog/hiring/what-is-adverse-impact-and-why-measuring-it-matters) commonly used. Of course, a user may change this value to fit their needs.
 
 
 # array with values like male_old, female_young, etc.
 protected = data.sex + '_' + np.where(data.age < 25, 'young', 'old')
 
-privileged = 'male_old'  # we assume, that older males are prviliged compared to young females, lets thest this hypothesis
+privileged = 'male_old'  # we assume, that older males are prviliged compared to young females, lets test this hypothesis
 
 fobject = exp.model_fairness(protected = protected, privileged = privileged)
 fobject.fairness_check(epsilon = 0.8)
 
 # This model should not be called fair. Generally, each metric should be between (epsilon, 1/epsilon). Metrics are calculated for each subgroup, and then their scores are divided by the score of the privileged subgroup. That is why we omit male_old in this method. When at least 2 metrics have scores ratio outside of the epsilon range, dalex declared this model unfair. In our case it cannot be decided automatically but the bias is visible and FPR (False Positive Rate) is especially important in case of risk assigning, so let's call our model unfair.
 # 
-# The bias was spotted in metric FPR, which is the False Positive Rate. The output above suggests that the model cannot be automatically approved (like said in the output above). So it is up to the user to decide. In my opinion, it is not a fair model. Lower FPR means that the privileged subgroup is getting False Positives more frequently than the unprivileged.
+# The bias was spotted in metric FPR, which is the False Positive Rate. The output above suggests that the model cannot be automatically approved (like said in the text above). So it is up to the user to decide. In my opinion, it is not a fair model. Lower FPR means that the unprivileged subgroup is getting False Positives more frequently than the privileged.
 
 
 # ## Let's check more metrics
